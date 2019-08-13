@@ -36,18 +36,20 @@ def index():
 # View function for profile
 @main.route("/user/<uname>")
 def profile(uname):
+    quote = get_quote()
     user = User.query.filter_by(username=uname).first()
 
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html", user=user)
+    return render_template("profile/profile.html", user=user, quote=quote)
 
 
 # Update profile view function
 @main.route("/user/<uname>/update", methods=["GET", "POST"])
 @login_required
 def update_profile(uname):
+    quote = get_quote()
     user = User.query.filter_by(username=uname).first()
     if user is None:
         abort(404)
@@ -62,13 +64,14 @@ def update_profile(uname):
 
         return redirect(url_for(".profile", uname=user.username))
 
-    return render_template("profile/update.html", form=form)
+    return render_template("profile/update.html", form=form, quote=quote)
 
 
 # update photos view function
 @main.route("/user/<uname>/update/pic", methods=["POST"])
 @login_required
 def update_pic(uname):
+    quote = get_quote()
     user = User.query.filter_by(username=uname).first()
     if "photo" in request.files:
         filename = photos.save(request.files["photo"])
@@ -83,6 +86,7 @@ def update_pic(uname):
 @login_required
 def new_blog():
     blog_form = BlogForm()
+    quote = get_quote()
 
     if blog_form.validate_on_submit():
 
@@ -106,12 +110,15 @@ def new_blog():
         return redirect(url_for("main.blog"))
 
     title = "New Blog"
-    return render_template("new_blog.html", title=title, blog_form=blog_form)
+    return render_template(
+        "new_blog.html", title=title, blog_form=blog_form, quote=quote
+    )
 
 
 # View function to display blog articles
 @main.route("/blog", methods=["GET", "POST"])
 def blog():
+    quote = get_quote()
     Gaming = Blog.query.filter_by(category="Gaming").all()
     Career = Blog.query.filter_by(category="Career").all()
     Finance = Blog.query.filter_by(category="Finance").all()
@@ -130,6 +137,7 @@ def blog():
         Sports=Sports,
         Fitness=Fitness,
         blogs=blogs,
+        quote=quote,
     )
 
 
@@ -137,6 +145,7 @@ def blog():
 @main.route("/comment/<int:id>", methods=["GET", "POST"])
 @login_required
 def new_comment(id):
+    quote = get_quote()
     comment = Comment.query.filter_by(blog_id=id)
 
     form_comment = CommentForm()
@@ -148,5 +157,7 @@ def new_comment(id):
         db.session.add(new_comment)
         db.session.commit()
 
-    return render_template("comments.html", form_comment=form_comment, comment=comment)
+    return render_template(
+        "comments.html", form_comment=form_comment, comment=comment, quote=quote
+    )
 
