@@ -1,0 +1,33 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: whitesmoke;
+}
+
+.navbar-header a {
+    font-family: 'Tangerine', cursive;
+    font-size: 48px;
+    color: whitesmoke;
+}
+
+.jumbotron {
+    background-color: whitesmoke;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 10px;
+}
+
+.jumbotron p {
+    font-family: 'Courgette', cursive;
+}
+
+.jumbotron p,
+.jumbotron h6 {
+    padding: 0px;
+    margin: 0px;
+}

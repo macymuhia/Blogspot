@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% import 'macros.html' as macro%}
+<!-- Styles Block -->
+
+{% block styles%} {{ super ()}}
+<link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+<link href="https://fonts.googleapis.com/css?family=Courgette|Tangerine&display=swap" rel="stylesheet"> {% endblock %}
+
+<!-- This describes what will appear on the landing page -->
+{% block content %}
+<!-- Quotes section -->
+<div class="container">
+    <div class="jumbotron text-center">
+        <p>{{quote.quote}}</p>
+        <h6>{{quote.author}}</h6>
+    </div>
+    <ul>
+        {{macro.displayBlogs(Gaming)}}
+    </ul>
+    <ul>
+        {{macro.displayBlogs(Career)}}
+    </ul>
+    <ul>
+        {{macro.displayBlogs(Finance)}}
+    </ul>
+</div>
+
+{% endblock%}
