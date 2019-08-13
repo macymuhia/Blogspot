@@ -3,6 +3,7 @@ from . import auth
 from flask_login import login_user, logout_user, login_required
 from ..models import User
 from .forms import LoginForm, RegistrationForm
+from ..request import get_quote
 from .. import db
 from ..email import mail_message
 
@@ -10,6 +11,7 @@ from ..email import mail_message
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     login_form = LoginForm()
+    quote = get_quote()
     if login_form.validate_on_submit():
         user = User.query.filter_by(email=login_form.email.data).first()
         if user is not None and user.verify_password(login_form.password.data):
@@ -19,13 +21,16 @@ def login():
         flash("Invalid username or Password")
 
     title = "Blogs login"
-    return render_template("auth/login.html", login_form=login_form, title=title)
+    return render_template(
+        "auth/login.html", login_form=login_form, title=title, quote=quote
+    )
 
 
 # Registration Route
 @auth.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
+    quote = get_quote()
     if form.validate_on_submit():
         user = User(
             email=form.email.data,
@@ -39,7 +44,7 @@ def register():
         return redirect(url_for("auth.login"))
 
     title = "New Account"
-    return render_template("auth/register.html", registration_form=form)
+    return render_template("auth/register.html", registration_form=form, quote=quote)
 
 
 # Log Out
